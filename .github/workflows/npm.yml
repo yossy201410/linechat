@@ -1,0 +1,27 @@
+name: Update Package.json
+on: workflow_dispatch
+
+jobs:
+  package-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: setup
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          npm install -g npm-check-updates
+      - name: version up
+        run: | 
+          ncu -u
+          npm install # package-lock.jsonを更新したい
+      - name: commit
+        run: |
+          git switch -c update_package_json
+          git add . 
+          git commit -m 'package.json update'
+          git push --set-upstream origin update_package_json
+      - name: create pull request
+        run: gh pr create -t "update package json" -b "update package json"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
