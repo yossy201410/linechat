@@ -24,4 +24,4 @@ jobs:
       - name: create pull request
         run: gh pr create -t "update package json" -b "update package json"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: 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
